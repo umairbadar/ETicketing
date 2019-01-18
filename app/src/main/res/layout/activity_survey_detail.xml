@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.lubna.eticketing.Survey.SurveyDetail"
+    android:background="#F1F8E9">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="495dp"
+        android:background="#F1F8E9"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_green_dark"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnDashboard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/holo_green_dark"
+                android:text="DashBoard"
+                android:textColor="@android:color/background_light" />
+
+            <Button
+                android:id="@+id/btnProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/holo_green_dark"
+                android:text="Profile"
+                android:textColor="@android:color/background_light" />
+
+            <Button
+                android:visibility="gone"
+                android:id="@+id/btnPdfView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/holo_green_dark"
+                android:text="Open PDF"
+                android:textColor="@android:color/background_light" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtHead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="Survey Detail "
+                android:textColor="@android:color/holo_green_dark"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:drawablePadding="4dp"/>
+
+            <TextView
+                android:id="@+id/tvtittle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F1F8E9"
+                android:drawableLeft="@drawable/su"
+                android:padding="10dp"
+                android:text="Survey Tittle: "
+                android:textColor="@android:color/background_dark"
+                android:textStyle="bold"
+                android:drawablePadding="4dp"/>
+
+
+            <TextView
+                android:id="@+id/tvnro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F1F8E9"
+                android:drawableLeft="@drawable/noo"
+                android:padding="10dp"
+                android:text="NRO Number: "
+                android:textColor="@android:color/background_dark"
+                android:textStyle="bold"
+                android:drawablePadding="4dp"/>
+
+            <TextView
+                android:id="@+id/tvsite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F1F8E9"
+                android:drawableLeft="@drawable/or"
+                android:padding="10dp"
+                android:text="Site Name: "
+                android:textColor="@android:color/background_dark"
+                android:textStyle="bold"
+                android:drawablePadding="4dp"/>
+
+            <TextView
+                android:id="@+id/tvadd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F1F8E9"
+                android:drawableLeft="@drawable/ic"
+                android:padding="10dp"
+                android:text="Address: "
+                android:textColor="@android:color/background_dark"
+                android:textStyle="bold"
+                android:drawablePadding="4dp"/>
+
+            <TextView
+                android:id="@+id/tvdeal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F1F8E9"
+                android:drawableLeft="@drawable/no"
+                android:padding="10dp"
+                android:text="Dealer : "
+                android:textColor="@android:color/background_dark"
+                android:textStyle="bold"
+                android:drawablePadding="4dp"/>
+
+            <TextView
+                android:id="@+id/tvmanger"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F1F8E9"
+                android:drawableLeft="@drawable/no"
+                android:padding="10dp"
+                android:text="Manager : "
+                android:textColor="@android:color/background_dark"
+                android:textStyle="bold"
+                android:drawablePadding="4dp"
+                />
+
+            <TextView
+                android:id="@+id/tvinspctby"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F1F8E9"
+                android:drawableLeft="@drawable/no"
+                android:padding="10dp"
+                android:text="Inspected By : "
+                android:textColor="@android:color/background_dark"
+                android:textStyle="bold"
+                android:drawablePadding="4dp"/>
+
+            <TextView
+                android:id="@+id/tvdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F1F8E9"
+                android:drawableLeft="@drawable/calender"
+                android:padding="10dp"
+                android:text="Submit Date : "
+                android:textColor="@android:color/background_dark"
+                android:textStyle="bold"
+                android:drawablePadding="4dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#F1F8E9">
+
+                <TextView
+                    android:id="@+id/tvstatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#F1F8E9"
+                    android:drawableLeft="@drawable/reporticone"
+                    android:padding="10dp"
+                    android:text="Status : "
+                    android:textColor="@android:color/background_dark"
+                    android:textStyle="bold"
+                    android:drawablePadding="4dp"/>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="#F1F8E9"
+                    android:padding="10dp"/>
+
+                    <TextView
+                        android:id="@+id/txtProgress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0%"
+                        android:layout_centerInParent="true"/>
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LayoutAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:background="#F1F8E9">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:clickable="true"
+                android:src="@drawable/ic_my_location_black_24dp"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabImgUpload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:clickable="true"
+                android:src="@drawable/ic_image_black_24dp"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabStartSurvey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:clickable="true"
+                android:src="@drawable/ic_survey1"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

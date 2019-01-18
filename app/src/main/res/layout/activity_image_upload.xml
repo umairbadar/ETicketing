@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Survey.ImageUpload">
+
+    <TextView
+        android:id="@+id/txtHeading"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:text="Image Upload"
+        android:textSize="24sp"
+        android:background="#000000"
+        android:textColor="#FFFFFF"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Widget.PopupMenu.Large"/>
+
+    <RelativeLayout
+        android:id="@+id/layout1"
+        android:layout_below="@id/txtHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+
+
+    <ImageView
+        android:id="@+id/Img"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_upload_img"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:tooltipText="Choose Image"/>
+
+    <EditText
+        android:id="@+id/txtImgTitle"
+        android:layout_below="@+id/Img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="IMAGE TITLE"/>
+        <LinearLayout
+            android:layout_below="@id/txtImgTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true"
+
+            android:layout_marginBottom="10dp">
+
+            <Button
+                android:id="@+id/buttonChoose"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Choose Image"
+                android:drawableLeft="@drawable/ic_choose_image"/>
+
+            <Button
+                android:id="@+id/BtnUploadImg"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Upload Image"
+                android:drawableLeft="@drawable/ic_upload_image"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_below="@id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:orientation="vertical">
+
+        <GridView
+            android:id="@+id/gridView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnWidth="90dp"
+            android:gravity="center"
+            android:horizontalSpacing="10dp"
+            android:numColumns="3"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="10dp">
+
+        </GridView>
+
+    </LinearLayout>
+
+</RelativeLayout>

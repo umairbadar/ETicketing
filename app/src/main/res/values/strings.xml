@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">E Ticketing</string>
+
+    <string name="title_activity_home">Home</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="service_portal">SERVICE PORTAL</string>
+    <string name="approval_Status">Select Status</string>
+    <string-array name="status">
+
+
+        <item> Approved</item>
+        <item> Not Approved</item>
+    </string-array>
+
+    <string name="start_updates">START LOCATION UPDATES</string>
+    <string name="stop_updates">STOP LOCATION UPDATES</string>
+    <string name="get_last_location">GET LAST LOCATION</string>
+
+    <string name="cancel">GET LAST LOCATION</string>
+    <string name="GPSAlertDialogTitle">GET LAST LOCATION</string>
+    <string name="GPSAlertDialogMessage">GET LAST LOCATION</string>
+
+    <string-array name="assign">
+        <item>Select Category</item>
+        <item>Own Employees</item>
+        <item>Department</item>
+        <item>Third Party</item>
+    </string-array>
+
+
+</resources>

@@ -1,0 +1,90 @@
+package com.example.lubna.eticketing.Survey;
+
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.example.lubna.eticketing.R;
+
+import java.util.ArrayList;
+
+/**
+ * Created by lubna on 11/15/2017.
+ */
+
+public class listviewSAdapter extends BaseAdapter {
+
+
+    public ArrayList<ModelS> SurveyList;
+    Activity activity;
+    SharedPreferences sp;
+
+    @Override
+    public int getCount() {
+        return SurveyList.size();
+
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return SurveyList.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+            ViewHolder holder;
+            LayoutInflater inflater = activity.getLayoutInflater();
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.listsurvey, null);
+                holder = new ViewHolder();
+                holder.mSNo = (TextView) convertView.findViewById(R.id.sNo);
+                holder.msurvey = (TextView) convertView.findViewById(R.id.survey);
+                holder.msite = (TextView) convertView.findViewById(R.id.sitename);
+
+                holder.lview = (LinearLayout) convertView.findViewById(R.id.relativeLayout1);
+                convertView.setTag(holder);
+                GradientDrawable shape = new GradientDrawable();
+                shape.setCornerRadius(10);
+                shape.setColor(Color.parseColor("#ff669900"));
+                holder.lview.setBackground(shape);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+
+            }
+            ModelS item =SurveyList.get(position);
+
+            holder.mSNo.setText(item.getsNo().toString());
+            holder.msurvey.setText(item.getTicket().toString());
+            holder.msite.setText(item.getSitename().toString());
+        return convertView;
+    }
+    public listviewSAdapter(Activity activity, ArrayList<ModelS> productList) {
+        super();
+        this.activity = activity;
+        this.SurveyList = productList;
+        this.sp = sp;
+    }
+    private class ViewHolder {
+        LinearLayout lview;
+        TextView mSNo;
+        TextView msurvey;
+        TextView msite;
+
+
+    }
+
+
+}
