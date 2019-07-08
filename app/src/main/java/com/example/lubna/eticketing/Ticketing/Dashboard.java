@@ -35,6 +35,7 @@ import static android.content.ContentValues.TAG;
 
 
 public class Dashboard extends Activity {
+
     private SharedPreferences sharedp;
     public static final  String Pre = "MyPre";
     private String UserID,UserRoleID,UserRoleName;
@@ -237,6 +238,7 @@ public class Dashboard extends Activity {
         startActivity(intent);
         finish();
     }
+
     private void refresh() {
         finish();
         startActivity(getIntent());

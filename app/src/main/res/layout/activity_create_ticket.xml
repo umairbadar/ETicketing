@@ -74,13 +74,12 @@
                 android:textColor="@color/cardview_dark_background"
                 android:textStyle="bold" />
 
-            <Spinner
-                android:id="@+id/spinnersite"
+
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:id="@+id/spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="What is your location/site"
-                android:inputType="text"
-                android:textColorHint="@color/cardview_dark_background" />
+                android:padding="5dp" />
 
             <EditText
                 android:id="@+id/editboxdescription"

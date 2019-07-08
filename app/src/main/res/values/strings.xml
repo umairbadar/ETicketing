@@ -31,5 +31,15 @@
         <item>Third Party</item>
     </string-array>
 
+    <string-array name="Animals">
+        <item>Select Animal!!</item>
+        <item>Lion</item>
+        <item>Tiger</item>
+        <item>Elephant</item>
+        <item>Zebra</item>
+        <item>Giraffe</item>
+        <item>Deer</item>
+    </string-array>
+
 
 </resources>

@@ -190,12 +190,9 @@ public class DashboardSurvey extends Activity {
                                 tvwarning.setText(jsonObj.getString("total_warnings"));
 
 
-                                int incomp = jsonObj.getInt("total_incomplete_surveys");
+                                /*int incomp = jsonObj.getInt("total_incomplete_surveys");
                                 int warn = jsonObj.getInt("total_warnings");
-                                int alert = jsonObj.getInt("total_alerts");
-
-                                int totalCount = incomp + warn + alert;
-                                ShortcutBadger.applyCount(DashboardSurvey.this, totalCount); //for 1.1.4+
+                                int alert = jsonObj.getInt("total_alerts");*/
 
                             } catch (final JSONException e) {
                                 Log.e(TAG, "Json parsing error: " + e.getMessage());

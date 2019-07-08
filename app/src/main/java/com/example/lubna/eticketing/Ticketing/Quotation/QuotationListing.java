@@ -82,6 +82,9 @@ public class QuotationListing extends AppCompatActivity {
 
     public void QuotationList() {
 
+        /*Toast.makeText(getApplicationContext(),DeptID + " " + UserID,
+                Toast.LENGTH_LONG).show();*/
+
         final AlertDialog progressDialog = new SpotsDialog(this,R.style.CustomProgress);
         progressDialog.show();
         progressDialog.setCancelable(false);
@@ -376,7 +379,6 @@ public class QuotationListing extends AppCompatActivity {
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(req);
         }
-
     }
 
     @Override

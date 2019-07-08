@@ -3,6 +3,7 @@ package com.example.lubna.eticketing.Ticketing.Quotation;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,12 +18,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.lubna.eticketing.R;
+import com.example.lubna.eticketing.Survey.DashboardSurvey;
 import com.example.lubna.eticketing.Survey.Survey_Login;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import dmax.dialog.SpotsDialog;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class QuotationDashboard extends AppCompatActivity {
 
@@ -30,11 +33,15 @@ public class QuotationDashboard extends AppCompatActivity {
     private String DepartID,UserID;
     private String TAG = QuotationDashboard.class.getSimpleName();
     private LinearLayout Recomm,App,Dec,Pen;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quotation_dashboard);
+
+        sharedPreferences = getSharedPreferences("MyPre",MODE_PRIVATE);
+        UserID = sharedPreferences.getString("userid","");
 
         txtRecomm = (TextView) findViewById(R.id.txtRecomm);
         txtApp = (TextView) findViewById(R.id.txtApp);
@@ -43,7 +50,7 @@ public class QuotationDashboard extends AppCompatActivity {
 
         Intent intent = getIntent();
         DepartID = intent.getStringExtra("DepartID");
-        UserID = intent.getStringExtra("UserID");
+        //UserID = intent.getStringExtra("UserID");
 
         Recomm = (LinearLayout) findViewById(R.id.layoutRecomm);
         App = (LinearLayout) findViewById(R.id.layoutApp);
@@ -134,6 +141,10 @@ public class QuotationDashboard extends AppCompatActivity {
                                 txtDec.setText(declined);
                                 txtRecomm.setText(recommended);
                                 txtPen.setText(pending);
+
+                                int  pendingQuo = jsonObject.getInt("pending_quotations");
+
+                                ShortcutBadger.applyCount(QuotationDashboard.this, pendingQuo); //for 1.1.4+
 
                             } catch (JSONException e) {
                                 e.printStackTrace();

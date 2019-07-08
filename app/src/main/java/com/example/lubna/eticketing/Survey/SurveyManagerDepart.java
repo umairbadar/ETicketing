@@ -55,8 +55,9 @@ public class SurveyManagerDepart extends AppCompatActivity {
         Intent intent = getIntent();
         A = intent.getStringExtra("A");
         RoleName = intent.getStringExtra("RoleName");
+        RoleName = RoleName.replace(" " , "%20");
 
-        listView = (ListView) findViewById(R.id.listview);
+        listView = findViewById(R.id.listview);
 
         getDepartments();
 

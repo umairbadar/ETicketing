@@ -33,13 +33,13 @@ import java.util.Map;
 
 import dmax.dialog.SpotsDialog;
 
-public class Survey_Login extends Activity implements View.OnClickListener{
-    public static final  String Pre = "MyPre";
+public class Survey_Login extends Activity implements View.OnClickListener {
+    public static final String Pre = "MyPre";
 
     //Server IP Address
-    public static String IP = "192.168.1.109:8000";
-    public static String IP_ALI = "192.168.1.132:8000";
-    public static final String LOGIN_URL = "http://"+IP+"/api/login";
+    public static String IP = "172.16.10.72";
+    public static String IP_ALI = "172.16.10.217";
+    public static final String LOGIN_URL = "http://" + IP + "/api/login";
     public static final String KEY_USERNAME = "email";
     public static final String KEY_PASSWORD = "password";
     private EditText editTextUsername;
@@ -50,6 +50,7 @@ public class Survey_Login extends Activity implements View.OnClickListener{
     SharedPreferences sp;
     SharedPreferences.Editor edit;
     ScrollView mainLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +63,7 @@ public class Survey_Login extends Activity implements View.OnClickListener{
 
         mainLayout = (ScrollView) findViewById(R.id.mainLayout);
     }
+
     public boolean CheckFieldValidation() {
 
         boolean valid = true;
@@ -78,10 +80,11 @@ public class Survey_Login extends Activity implements View.OnClickListener{
 
         return valid;
     }
+
     private void userLogin() {
         username = editTextUsername.getText().toString().trim();
         password = editTextPassword.getText().toString().trim();
-        final AlertDialog progressDialog = new SpotsDialog(this,R.style.CustomProgress);
+        final AlertDialog progressDialog = new SpotsDialog(this, R.style.CustomProgress);
         progressDialog.show();
         progressDialog.setCancelable(false);
 
@@ -89,33 +92,30 @@ public class Survey_Login extends Activity implements View.OnClickListener{
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(response != null) {
+                        if (response != null) {
                             try {
-                                JSONObject json = new JSONObject(response.substring(response.indexOf("{"), response.lastIndexOf("}") + 1));
+                                JSONObject json = new JSONObject(response);
                                 String msg = json.getString("msg");
-                                if(msg.equals("success"))
-                            {
+                                if (msg.equals("success")) {
                                     progressDialog.dismiss();
-                                    String id=json.getString("user_id");
+                                    String id = json.getString("user_id");
                                     edit = sp.edit();
-                                    edit.putString("userid",json.getString("user_id"));
-                                    edit.putString("username",json.getString("user_name"));
-                                    edit.putString("role_id",json.getString("role_id"));
-                                    edit.putString("role_name",json.getString("role_name"));
-                                    edit.putString("userdepart",json.getString("department_name"));
-                                    edit.putString("userdepartid",json.getString("department_id"));
-                                    edit.putString("parentid",json.getString("parent_department_id"));
-                                    edit.putString("email",username);
-                                    edit.putBoolean("saveLogin",true);
+                                    edit.putString("userid", json.getString("user_id"));
+                                    edit.putString("username", json.getString("user_name"));
+                                    edit.putString("role_id", json.getString("role_id"));
+                                    edit.putString("role_name", json.getString("role_name"));
+                                    edit.putString("userdepart", json.getString("department_name"));
+                                    edit.putString("userdepartid", json.getString("department_id"));
+                                    edit.putString("parentid", json.getString("parent_department_id"));
+                                    edit.putString("email", username);
+                                    edit.putBoolean("saveLogin", true);
                                     edit.commit();
                                     edit.apply();
                                     openProfile();
-                                }
-                                else if(msg.equals("error")){
+                                } else if (msg.equals("error")) {
                                     Toast.makeText(Survey_Login.this, "Your Email Or Password is Incorrect", Toast.LENGTH_LONG).show();
                                 }
-                            }
-                            catch (final JSONException e) {
+                            } catch (final JSONException e) {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -126,11 +126,9 @@ public class Survey_Login extends Activity implements View.OnClickListener{
                                     }
                                 });
                             }
-                        }
-                        else
-                        {
-                            Toast.makeText(getApplicationContext(),
-                                    "Couldn't get json from server. Check LogCat for possible errors!", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Couldn't get json from server. Check LogCat for possible errors!",
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
                 },
@@ -152,12 +150,14 @@ public class Survey_Login extends Activity implements View.OnClickListener{
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
+
     private void openProfile() {
         finish();
         Intent intent = new Intent(this, MainMenu.class);
         intent.putExtra(KEY_USERNAME, username);
         startActivity(intent);
     }
+
     public boolean isNetworkAvailable() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
@@ -167,9 +167,7 @@ public class Survey_Login extends Activity implements View.OnClickListener{
             CheckFieldValidation();
             userLogin();
             return true;
-        }
-        else if(networkInfo == null)
-        {
+        } else if (networkInfo == null) {
             //Toast.makeText(Survey_Login.this,"No internet Connection",Toast.LENGTH_LONG).show();
             Snackbar snackbar = Snackbar
                     .make(mainLayout, "No Internet Connection", Snackbar.LENGTH_LONG);
@@ -183,8 +181,7 @@ public class Survey_Login extends Activity implements View.OnClickListener{
 
     public void onClick(View v) {
 
-        if (v == buttonLogin)
-        {
+        if (v == buttonLogin) {
             isNetworkAvailable();
         }
 

@@ -51,10 +51,11 @@
                     android:text="LOGOUT"
                     android:textColor="@android:color/background_light" />
             </LinearLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
-                android:background="@drawable/bannerb"
+                android:background="@drawable/bannere"
                 android:gravity="bottom"
                 android:text="DASHBOARD"
                 android:textAlignment="center"

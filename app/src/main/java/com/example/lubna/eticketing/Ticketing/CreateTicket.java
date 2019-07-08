@@ -42,12 +42,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class CreateTicket extends AppCompatActivity {
-    Spinner typename,Sitename;
+    Spinner typename;
     ArrayAdapter<String> TypeArray;
     ArrayAdapter<String> TypeidArray;
     ArrayAdapter<String> SitesArray;
@@ -64,11 +65,19 @@ public class CreateTicket extends AppCompatActivity {
     private ImageView imageView;
     private Button submit;
 
+    //Custom Spinner
+    String[] options;
+    Spinner spinner;
+    private ArrayList<String> sites;
+
     private String TAG = TicketListing.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_ticket);
+
+        spinner = (Spinner) findViewById(R.id.spinner);
+        sites = new ArrayList<>();
 
         //ticketing image upload
         BtnChooseImg = findViewById(R.id.buttonChoose);
@@ -82,11 +91,10 @@ public class CreateTicket extends AppCompatActivity {
 
 
         typename = (Spinner) findViewById(R.id.spinnertype);
-        Sitename= (Spinner) findViewById(R.id.spinnersite);
 
         Button cancel= (Button) findViewById(R.id.btncancel);
         submit = (Button) findViewById(R.id.buttonsubmitticket);
-        submit.setEnabled(false);
+        //submit.setEnabled(false);
 
         Subject = (EditText) findViewById(R.id.editboxsubject);
         Description = (EditText) findViewById(R.id.editboxdescription);
@@ -104,9 +112,7 @@ public class CreateTicket extends AppCompatActivity {
         TypeidArray = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
         typename.setAdapter( TypeArray);
 
-        SitesArray = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
         SitesidArray = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
-        Sitename.setAdapter(SitesArray );
 
         getTypes();
         typename.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -119,17 +125,22 @@ public class CreateTicket extends AppCompatActivity {
                 return;
             }
         });
+
         getSites();
-        Sitename.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> adapterView , View view, final int postion, long l) {
-                 SITEID=SitesidArray.getItem(postion);
-                 SITENAME = SitesArray.getItem(postion);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                SITEID = String.valueOf(spinner.getSelectedItem());
+                SITENAME = SitesidArray.getItem(i);
+                //Toast.makeText(getApplicationContext(),SITEID + " " + SITENAME,Toast.LENGTH_LONG).show();
             }
 
+            @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                return;
+
             }
         });
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,6 +215,7 @@ public class CreateTicket extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(CreateTicket.this);
         requestQueue.add(req);
     }
+
     public void getSites(){
         final String url = "http://"+Survey_Login.IP+"/api/petro-sites";
         StringRequest req = new StringRequest(url,
@@ -219,9 +231,15 @@ public class CreateTicket extends AppCompatActivity {
                                 for (int i =0; i < c.length(); i++)
                                 {
                                     JSONObject obj = (JSONObject) c.get(i);
-                                    SitesArray.add(obj.getString("name"));
+                                    sites.add(obj.getString("name"));
                                     SitesidArray.add(obj.getString("location_id"));
                                 }
+
+                                /*spinner.setAdapter(new ArrayAdapter<>(getApplicationContext(),
+                                        android.R.layout.simple_spinner_dropdown_item, sites));*/
+
+                                ArrayAdapter  adapterArea = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_dropdown_item, sites);
+                                spinner.setAdapter(adapterArea);
                             }
                             catch (final JSONException e) {
                                 runOnUiThread(new Runnable() {
@@ -253,6 +271,7 @@ public class CreateTicket extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(CreateTicket.this);
         requestQueue.add(req);
     }
+
     private void createticketrsubmit() {
 
        final String SUBJECT= Subject.getText().toString().trim();
@@ -320,12 +339,12 @@ public class CreateTicket extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
+
     public void onBackPressed() {
         Intent intent = new Intent(this, Dashboard.class);
         startActivity(intent);
         finish();
     }
-
 
     private void showFileChooser() {
         Intent intent = new Intent();
@@ -345,7 +364,7 @@ public class CreateTicket extends AppCompatActivity {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 //Setting the Bitmap to ImageView
                 imageView.setImageBitmap(bitmap);
-                submit.setEnabled(true);
+                //submit.setEnabled(true);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -426,5 +445,4 @@ public class CreateTicket extends AppCompatActivity {
 
         }
     }
-
 }

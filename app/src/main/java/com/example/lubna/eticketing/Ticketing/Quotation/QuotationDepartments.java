@@ -65,7 +65,7 @@ public class QuotationDepartments extends AppCompatActivity {
                 finish();
                 Intent intent = new Intent(QuotationDepartments.this,QuotationDashboard.class);
                 intent.putExtra("DepartID",ID);
-                intent.putExtra("UserID",UserID);
+                //intent.putExtra("UserID",UserID);
                 startActivity(intent);
             }
         });

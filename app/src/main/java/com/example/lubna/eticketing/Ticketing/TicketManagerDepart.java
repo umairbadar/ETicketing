@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.util.LogWriter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -56,6 +58,8 @@ public class TicketManagerDepart extends AppCompatActivity {
         Intent intent = getIntent();
         A = intent.getStringExtra("A");
         RoleName = intent.getStringExtra("RoleName");
+        RoleName = RoleName.replace(" " , "%20");
+        //Toast.makeText(getApplicationContext(),RoleName,Toast.LENGTH_LONG).show();
 
         listView = (ListView) findViewById(R.id.listview);
 
@@ -94,7 +98,7 @@ public class TicketManagerDepart extends AppCompatActivity {
         final String url = "http://"+Survey_Login.IP+"/api/get-reporting-manager-departments/"+RoleName+"/"+DeptID;
         //Toast.makeText(getApplicationContext(),url,Toast.LENGTH_LONG).show();
 
-        StringRequest req = new StringRequest(url,
+        StringRequest req = new StringRequest(Request.Method.GET,url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -132,6 +136,7 @@ public class TicketManagerDepart extends AppCompatActivity {
                             }
                         }
                         else {
+                            progressDialog.dismiss();
                             Log.e(TAG, "Couldn't get json from server.");
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -149,7 +154,9 @@ public class TicketManagerDepart extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(TicketManagerDepart.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                        progressDialog.dismiss();
+                        Toast.makeText(TicketManagerDepart.this,
+                                "error", Toast.LENGTH_LONG).show();
                     }
                 });
 

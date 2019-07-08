@@ -72,8 +72,8 @@ public class SurveyList extends AppCompatActivity {
         lview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
                 String sno = ((TextView)view.findViewById(R.id.sNo)).getText().toString();
                 String sur = ((TextView)view.findViewById(R.id.survey)).getText().toString();
                 Intent i = new Intent(SurveyList.this, SurveyDetail.class);
@@ -83,8 +83,7 @@ public class SurveyList extends AppCompatActivity {
                 i.putExtra("A",A);
                 startActivity(i);
                 finish();
-
-            }
+                }
         });
 
     }

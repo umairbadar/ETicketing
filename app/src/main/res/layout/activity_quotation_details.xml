@@ -1,204 +1,404 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
 
         <LinearLayout
             android:id="@+id/layout1"
-            android:background="#233588"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#233588"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btnDashboard"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Dashboard"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:layout_weight="1"
                 android:background="#233588"
-                android:textColor="#fff"
                 android:drawableLeft="@drawable/ic_keyboard_arrow_left_black_24dp"
-                />
+                android:text="Dashboard"
+                android:textColor="#fff" />
+
             <Button
                 android:id="@+id/btnlogout"
-                android:textColor="#fff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_width="match_parent"
-                android:background="#233588"
-                android:layout_height="wrap_content"
-                android:text="Logout"
-                android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
                 android:layout_weight="1"
-                />
+                android:background="#233588"
+                android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
+                android:text="Logout"
+                android:textColor="#fff" />
         </LinearLayout>
 
-            <TextView
-                android:id="@+id/txt1"
-                android:layout_below="@+id/layout1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="QUOTATION DETAIL"
-                android:textSize="24dp"
-                android:background="#233588"
-                android:textColor="#fff"
-                android:textStyle="bold"
-                android:paddingBottom="5dp" />
+        <TextView
+            android:id="@+id/txt1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout1"
+            android:background="#233588"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:text="QUOTATION DETAIL"
+            android:textColor="#fff"
+            android:textSize="24dp"
+            android:textStyle="bold" />
 
         <LinearLayout
-            android:layout_below="@id/txt1"
             android:id="@+id/lay1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/txt1"
             android:layout_margin="5dp"
-            android:padding="5dp"
+            android:background="@drawable/back"
             android:orientation="vertical"
-            android:background="@drawable/back">
+            android:padding="5dp">
 
             <TextView
                 android:id="@+id/txtID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:hint="Quotation ID: "
-                android:textColorHint="#233588"
-                android:textSize="18dp"
-                android:textStyle="bold"
                 android:background="@drawable/textlines"
                 android:drawableLeft="@drawable/ic_tickets"
                 android:drawablePadding="5dp"
+                android:hint="Quotation ID: "
                 android:padding="7dp"
-                />
+                android:textColorHint="#233588"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtSR"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/textlines"
+                android:drawableLeft="@drawable/ic_tickets"
+                android:drawablePadding="5dp"
+                android:hint="SR ID: "
+                android:padding="7dp"
+                android:textColorHint="#233588"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtTicketID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/textlines"
+                android:drawableLeft="@drawable/ic_tickets"
+                android:drawablePadding="5dp"
+                android:hint="Ticket ID: "
+                android:padding="7dp"
+                android:textColorHint="#233588"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtSender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:hint="Sender "
-                android:textColorHint="#233588"
-                android:textSize="18dp"
-                android:textStyle="bold"
                 android:background="@drawable/textlines"
                 android:drawableLeft="@drawable/ic_tickets"
                 android:drawablePadding="5dp"
+                android:hint="Sender "
                 android:padding="7dp"
-                />
+                android:textColorHint="#233588"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtSite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:hint="Site: "
-                android:textColorHint="#233588"
-                android:textSize="18dp"
-                android:textStyle="bold"
                 android:background="@drawable/textlines"
                 android:drawableLeft="@drawable/ic_tickets"
                 android:drawablePadding="5dp"
-                android:padding="7dp"/>
+                android:hint="Site: "
+                android:padding="7dp"
+                android:textColorHint="#233588"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtBody"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:hint="Description:"
-                android:textColorHint="#233588"
-                android:textSize="18dp"
-                android:textStyle="bold"
                 android:background="@drawable/textlines"
                 android:drawableLeft="@drawable/ic_tickets"
                 android:drawablePadding="5dp"
-                android:padding="7dp"/>
+                android:hint="Description:"
+                android:padding="7dp"
+                android:textColorHint="#233588"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
-            <TextView android:id="@+id/txtDate"
+            <TextView
+                android:id="@+id/txtTax"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:hint="Date:"
-                android:textColorHint="#233588"
-                android:textSize="18dp"
-                android:textStyle="bold"
                 android:background="@drawable/textlines"
                 android:drawableLeft="@drawable/ic_tickets"
                 android:drawablePadding="5dp"
-                android:padding="7dp"/>
+                android:hint="Tax: "
+                android:padding="7dp"
+                android:textColorHint="#233588"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtAmountBeforeTax"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/textlines"
+                android:drawableLeft="@drawable/ic_tickets"
+                android:drawablePadding="5dp"
+                android:hint="Amount Before Tax: "
+                android:padding="7dp"
+                android:textColorHint="#233588"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtTotalAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/textlines"
+                android:drawableLeft="@drawable/ic_tickets"
+                android:drawablePadding="5dp"
+                android:hint="Total Amount: "
+                android:padding="7dp"
+                android:textColorHint="#233588"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/textlines"
+                android:drawableLeft="@drawable/ic_tickets"
+                android:drawablePadding="5dp"
+                android:hint="Date:"
+                android:padding="7dp"
+                android:textColorHint="#233588"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:hint="Status:"
-                android:textColorHint="#233588"
-                android:textSize="18dp"
-                android:textStyle="bold"
                 android:background="@drawable/textlines"
                 android:drawableLeft="@drawable/ic_tickets"
                 android:drawablePadding="5dp"
-                android:padding="7dp"/>
+                android:hint="Status:"
+                android:padding="7dp"
+                android:textColorHint="#233588"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtReply"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:hint="Reply:"
-                android:textColorHint="#233588"
-                android:textSize="18dp"
-                android:textStyle="bold"
                 android:background="@drawable/textlines"
                 android:drawableLeft="@drawable/ic_tickets"
                 android:drawablePadding="5dp"
-                android:padding="7dp"/>
+                android:hint="Reply:"
+                android:padding="7dp"
+                android:textColorHint="#233588"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/textlines"
+                android:drawableLeft="@drawable/ic_tickets"
+                android:drawablePadding="5dp"
+                android:hint="Products:"
+                android:padding="7dp"
+                android:textColorHint="#233588"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#32C2CD"
+                    android:gravity="center"
+                    android:text="Item"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#32C2CD"
+                    android:gravity="center"
+                    android:text="Quantity"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#32C2CD"
+                    android:gravity="center"
+                    android:text="Cost"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#32C2CD"
+                    android:gravity="center"
+                    android:text="Sub Total"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewItems"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
         </LinearLayout>
 
-    <LinearLayout
-        android:layout_below="@id/lay1"
-        android:id="@+id/LayoutAction"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:visibility="visible">
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabRecomm"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/LayoutAction"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:clickable="true"
-            android:src="@drawable/ic_recommended1"
-            android:backgroundTint="#233588"/>
+            android:layout_below="@id/lay1"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="visible">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabApproved"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:clickable="true"
-            android:src="@drawable/ic_approved1"
-            android:backgroundTint="#233588"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabDeclined"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:clickable="true"
-            android:src="@drawable/ic_decline1"
-            android:backgroundTint="#233588"/>
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fabRecomm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:src="@drawable/ic_recommended1"
+                    app:backgroundTint="#233588" />
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_recommend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Recommend"
+                    android:textColor="#233588"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"/>
 
-</RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fabApproved"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:src="@drawable/ic_approved1"
+                    app:backgroundTint="#233588" />
+
+                <TextView
+                    android:id="@+id/tv_approve"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Approve"
+                    android:textColor="#233588"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fabDeclined"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:src="@drawable/ic_decline1"
+                    app:backgroundTint="#233588" />
+
+                <TextView
+                    android:id="@+id/tv_decline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Decline"
+                    android:textColor="#233588"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>
 

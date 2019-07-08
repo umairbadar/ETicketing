@@ -237,7 +237,6 @@ public class TakeSurvey extends AppCompatActivity {
                                     for (int j = 0; j < ob.length(); j++) {
                                         JSONObject js = ob.getJSONObject(j);
                                         stringsqid = new String[ob.length()];
-
                                         String qid=js.getString("id");
                                         stringsqid[j]=qid;
                                         minqtyList.add(qid);
