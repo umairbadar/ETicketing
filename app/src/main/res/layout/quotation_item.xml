@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/layout1"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:weightSum="4">
+    android:weightSum="5.5">
+    
+    <CheckBox
+        android:id="@+id/checkboxID"
+        android:layout_width="0dp"
+        android:layout_weight="0.5"
+        android:layout_height="match_parent"
+        android:background="@drawable/tvback"/>
 
     <TextView
         android:id="@+id/tv_item"
@@ -14,14 +22,26 @@
         android:text="Item"
         android:gravity="center"
         android:textSize="14sp"
-        android:background="@drawable/tvback"/>
+        android:background="@drawable/tvback"
+        android:padding="4dp"/>
 
-    <TextView
+    <EditText
         android:id="@+id/tv_qty"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
         android:text="Qty"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:background="@drawable/tvback"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/tv_approved_qty"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:text="x"
         android:gravity="center"
         android:textSize="14sp"
         android:background="@drawable/tvback"/>

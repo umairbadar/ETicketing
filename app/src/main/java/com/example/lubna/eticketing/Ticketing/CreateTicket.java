@@ -1,6 +1,7 @@
 package com.example.lubna.eticketing.Ticketing;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,6 +16,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -41,9 +44,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.UUID;
 
@@ -54,9 +59,9 @@ public class CreateTicket extends AppCompatActivity {
     ArrayAdapter<String> SitesArray;
     ArrayAdapter<String> SitesidArray;
     SharedPreferences sharedp;
-    String UserID,TYPEID,SITEID,SITENAME,departid,Parent_Depart_ID;
-    private EditText Subject,Description;
-    final String   URLsaveTicket = "http://"+Survey_Login.IP+"/api/create-ticket";
+    String UserID, TYPEID, SITEID, SITENAME, departid, Parent_Depart_ID;
+    private EditText Subject, Description;
+    final String URLsaveTicket = "http://" + Survey_Login.IP + "/api/create-ticket";
     private Button BtnChooseImg;
     private int PICK_IMAGE_REQUEST = 1;
     private static final int STORAGE_PERMISSION_CODE = 2342;
@@ -64,6 +69,7 @@ public class CreateTicket extends AppCompatActivity {
     private Bitmap bitmap;
     private ImageView imageView;
     private Button submit;
+    private String path;
 
     //Custom Spinner
     String[] options;
@@ -71,6 +77,7 @@ public class CreateTicket extends AppCompatActivity {
     private ArrayList<String> sites;
 
     private String TAG = TicketListing.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +99,7 @@ public class CreateTicket extends AppCompatActivity {
 
         typename = (Spinner) findViewById(R.id.spinnertype);
 
-        Button cancel= (Button) findViewById(R.id.btncancel);
+        Button cancel = (Button) findViewById(R.id.btncancel);
         submit = (Button) findViewById(R.id.buttonsubmitticket);
         //submit.setEnabled(false);
 
@@ -110,7 +117,7 @@ public class CreateTicket extends AppCompatActivity {
 
         TypeArray = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
         TypeidArray = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
-        typename.setAdapter( TypeArray);
+        typename.setAdapter(TypeArray);
 
         SitesidArray = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
 
@@ -146,10 +153,6 @@ public class CreateTicket extends AppCompatActivity {
             public void onClick(View v) {
                 //createticketrsubmit();
                 uploadImage();
-                Toast.makeText(getApplicationContext(),"Ticket Created!",Toast.LENGTH_LONG).show();
-                Intent i = new Intent(getApplicationContext(), Dashboard.class);
-                startActivity(i);
-                finish();
             }
         });
 
@@ -166,26 +169,22 @@ public class CreateTicket extends AppCompatActivity {
 
     }
 
-    public void getTypes(){
-        final String url = "http://"+Survey_Login.IP+"/api/ticket-type";
+    public void getTypes() {
+        final String url = "http://" + Survey_Login.IP + "/api/ticket-type";
         StringRequest req = new StringRequest(url,
-                new Response.Listener<String>()
-                {
+                new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(response != null) {
-                            try
-                            {
+                        if (response != null) {
+                            try {
                                 JSONObject json = new JSONObject(response.substring(response.indexOf("{"), response.lastIndexOf("}") + 1));
-                                JSONArray c =  (JSONArray) json.get("ticket_types");
-                                for (int i =0; i < c.length(); i++)
-                                {
+                                JSONArray c = (JSONArray) json.get("ticket_types");
+                                for (int i = 0; i < c.length(); i++) {
                                     JSONObject obj = (JSONObject) c.get(i);
                                     TypeArray.add(obj.getString("Name"));
                                     TypeidArray.add(obj.getString("id"));
                                 }
-                            }
-                            catch (final JSONException e) {
+                            } catch (final JSONException e) {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -196,16 +195,13 @@ public class CreateTicket extends AppCompatActivity {
                                     }
                                 });
                             }
-                        }
-                        else
-                        {
+                        } else {
                             Toast.makeText(getApplicationContext(),
                                     "Couldn't get json from server. Check LogCat for possible errors!", Toast.LENGTH_LONG).show();
                         }
                     }
                 },
-                new Response.ErrorListener()
-                {
+                new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(CreateTicket.this, error.toString(), Toast.LENGTH_LONG).show();
@@ -216,20 +212,17 @@ public class CreateTicket extends AppCompatActivity {
         requestQueue.add(req);
     }
 
-    public void getSites(){
-        final String url = "http://"+Survey_Login.IP+"/api/petro-sites";
+    public void getSites() {
+        final String url = "http://" + Survey_Login.IP + "/api/petro-sites";
         StringRequest req = new StringRequest(url,
-                new Response.Listener<String>()
-                {
+                new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(response != null) {
-                            try
-                            {
+                        if (response != null) {
+                            try {
                                 JSONObject json = new JSONObject(response.substring(response.indexOf("{"), response.lastIndexOf("}") + 1));
-                                JSONArray c =  (JSONArray) json.get("sites");
-                                for (int i =0; i < c.length(); i++)
-                                {
+                                JSONArray c = (JSONArray) json.get("sites");
+                                for (int i = 0; i < c.length(); i++) {
                                     JSONObject obj = (JSONObject) c.get(i);
                                     sites.add(obj.getString("name"));
                                     SitesidArray.add(obj.getString("location_id"));
@@ -238,10 +231,9 @@ public class CreateTicket extends AppCompatActivity {
                                 /*spinner.setAdapter(new ArrayAdapter<>(getApplicationContext(),
                                         android.R.layout.simple_spinner_dropdown_item, sites));*/
 
-                                ArrayAdapter  adapterArea = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_dropdown_item, sites);
+                                ArrayAdapter adapterArea = new ArrayAdapter(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, sites);
                                 spinner.setAdapter(adapterArea);
-                            }
-                            catch (final JSONException e) {
+                            } catch (final JSONException e) {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -252,16 +244,13 @@ public class CreateTicket extends AppCompatActivity {
                                     }
                                 });
                             }
-                        }
-                        else
-                        {
+                        } else {
                             Toast.makeText(getApplicationContext(),
                                     "Couldn't get json from server. Check LogCat for possible errors!", Toast.LENGTH_LONG).show();
                         }
                     }
                 },
-                new Response.ErrorListener()
-                {
+                new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(CreateTicket.this, error.toString(), Toast.LENGTH_LONG).show();
@@ -274,29 +263,26 @@ public class CreateTicket extends AppCompatActivity {
 
     private void createticketrsubmit() {
 
-       final String SUBJECT= Subject.getText().toString().trim();
-        final String DESCRIPTION= Description.getText().toString().trim();
+        final String SUBJECT = Subject.getText().toString().trim();
+        final String DESCRIPTION = Description.getText().toString().trim();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URLsaveTicket,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(response != null) {
+                        if (response != null) {
                             try {
                                 JSONObject json = new JSONObject(response.substring(response.indexOf("{"), response.lastIndexOf("}") + 1));
                                 String msg = json.getString("msg");
-                                if(msg.equals("success"))
-                                {
+                                if (msg.equals("success")) {
                                     Toast.makeText(CreateTicket.this, "Submit Successfully", Toast.LENGTH_LONG).show();
-                                    Intent i = new Intent(CreateTicket.this,Dashboard.class);
+                                    Intent i = new Intent(CreateTicket.this, Dashboard.class);
                                     startActivity(i);
                                     finish();
-                                }
-                                else if(msg.equals("error")){
+                                } else if (msg.equals("error")) {
                                     Toast.makeText(CreateTicket.this, "Submit Fail", Toast.LENGTH_LONG).show();
                                 }
-                            }
-                            catch (final JSONException e) {
+                            } catch (final JSONException e) {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -307,9 +293,7 @@ public class CreateTicket extends AppCompatActivity {
                                     }
                                 });
                             }
-                        }
-                        else
-                        {
+                        } else {
                             Toast.makeText(getApplicationContext(),
                                     "Couldn't get json from server. Check LogCat for possible errors!", Toast.LENGTH_LONG).show();
                         }
@@ -325,7 +309,7 @@ public class CreateTicket extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
                 map.put("user_id", UserID);
-                map.put("ticket_title",SUBJECT);
+                map.put("ticket_title", SUBJECT);
                 map.put("ticket_type_id", TYPEID);
                 map.put("ticket_message", DESCRIPTION);
                 map.put("site_id", SITEID);
@@ -372,42 +356,36 @@ public class CreateTicket extends AppCompatActivity {
         }
     }
 
-    private void requestStoragePermission()
-    {
-        if (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+    private void requestStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
             return;
 
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},STORAGE_PERMISSION_CODE);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        if (requestCode == STORAGE_PERMISSION_CODE)
-        {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            {
-                Toast.makeText(getApplicationContext(),"Permission Granted",Toast.LENGTH_LONG).show();
-            }
-            else
-            {
-                Toast.makeText(getApplicationContext(),"Permission not Granted",Toast.LENGTH_LONG).show();
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Permission not Granted", Toast.LENGTH_LONG).show();
             }
         }
     }
 
-    private String getPath(Uri uri)
-    {
-        Cursor cursor = getContentResolver().query(uri,null,null,null,null);
+    private String getPath(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
         String document_id = cursor.getString(0);
 
-        document_id = document_id.substring(document_id.lastIndexOf(":")+1);
+        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
         cursor.close();
 
         cursor = getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id},null
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null
         );
         cursor.moveToFirst();
         String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
@@ -415,13 +393,83 @@ public class CreateTicket extends AppCompatActivity {
         return path;
     }
 
-    private void uploadImage()
-    {
+    public String getStringImage(Bitmap bmp) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+
+        return encodedImage;
+
+    }
+
+    private void uploadImage() {
+        final ProgressDialog loading = ProgressDialog.show(this, "Uploading...", "Please wait...", false, false);
         final String SUBJECT = Subject.getText().toString().trim();
         final String DESCRIPTION = Description.getText().toString().trim();
-        String path = getPath(filePath);
+        if (bitmap != null) {
+            path = getStringImage(bitmap);
+        } else {
+            path = "null";
+        }
 
-        try
+        StringRequest req = new StringRequest(Request.Method.POST, URLsaveTicket,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String msg = jsonObject.getString("msg");
+                            if (msg.equals("success")) {
+                                loading.dismiss();
+                                Toast.makeText(getApplicationContext(), "Ticket Created!", Toast.LENGTH_LONG).show();
+                                Intent i = new Intent(getApplicationContext(), Dashboard.class);
+                                startActivity(i);
+                                finish();
+                            } else {
+                                loading.dismiss();
+                                Toast.makeText(getApplicationContext(), msg,
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        loading.dismiss();
+                        Toast.makeText(getApplicationContext(), error.getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new Hashtable<String, String>();
+                params.put("image", path);
+                params.put("user_id", UserID);
+                params.put("ticket_title", SUBJECT);
+                params.put("ticket_type_id", TYPEID);
+                params.put("ticket_message", DESCRIPTION);
+                params.put("site_id", SITENAME);
+                params.put("ticket_site_name", SITEID);
+                params.put("user_depart_id", departid);
+                params.put("parent_department_id", Parent_Depart_ID);
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(req);
+
+       /* Toast.makeText(getApplicationContext(),"Userid: " + UserID +
+                " user depart id: " + departid + " parent depart id:" + Parent_Depart_ID +
+                " site id: " + SITENAME + " ticket site_ name: " + SITEID +
+                " ticket title: " + SUBJECT + " ticket type id: " +TYPEID +
+                " ticket message: " + DESCRIPTION,Toast.LENGTH_LONG).show();*/
+
+        /*try
         {
             String Uploadid = UUID.randomUUID().toString();
 
@@ -443,6 +491,6 @@ public class CreateTicket extends AppCompatActivity {
         {
             Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
 
-        }
+        }*/
     }
 }

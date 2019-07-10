@@ -11,11 +11,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,15 +51,16 @@ public class QuotationDetails extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private List<Model_Quotation_Item> list;
 
-    private Button btnDashboard,btnLogout;
+    private Button btnDashboard, btnLogout;
     public static final String KEY_ID = "id";
     public static final String KEY_REPLY = "reply";
     public String REPLY_VALUE;
-    private String Q_ID,QID,RoleName,ParentID,ID,RoleID,UserID,Email;
-    private TextView tv_recommend,tv_approve,tv_decline,txtSR,txtTicketID,txtTax,txtAmountBeforeTax,txtTotalAmount,txtID,txtSender,txtSite,txtBody,txtDate,txtStatus,txtReply;
-    private FloatingActionButton fabRecomm,fabApp,fabDec;
+    private String Q_ID, QID, RoleName, ParentID, ID,Quotation_ID, RoleID, UserID, Email;
+    private TextView tv_approved_qty,tv_recommend, tv_approve, tv_decline, txtSR, txtTicketID, txtTax, txtAmountBeforeTax, txtTotalAmount, txtID, txtSender, txtSite, txtBody, txtDate, txtStatus, txtReply;
+    private FloatingActionButton fabRecomm, fabApp, fabDec;
     private SharedPreferences sharedp;
     private EditText input;
+    private LinearLayout layout1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,19 +68,21 @@ public class QuotationDetails extends AppCompatActivity {
         setContentView(R.layout.activity_quotation_details);
 
         sharedp = getSharedPreferences(Survey_Login.Pre, Context.MODE_PRIVATE);
-        RoleName = sharedp.getString("role_name","");
-        ParentID = sharedp.getString("parentid","");
-        Email = sharedp.getString("email","");
+        RoleName = sharedp.getString("role_name", "");
+        ParentID = sharedp.getString("parentid", "");
+        Email = sharedp.getString("email", "");
 
         //Toast.makeText(getApplicationContext(),ParentID,Toast.LENGTH_LONG).show();
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         QID = intent.getStringExtra("QID");
         Q_ID = intent.getStringExtra("ID");
         UserID = intent.getStringExtra("UserID");
 
         //Toast.makeText(getApplicationContext(),Q_ID,Toast.LENGTH_LONG).show();
 
+        layout1 = findViewById(R.id.layout2);
+        tv_approved_qty = findViewById(R.id.tv_approved_qty);
         tv_recommend = findViewById(R.id.tv_recommend);
         tv_approve = findViewById(R.id.tv_approve);
         tv_decline = findViewById(R.id.tv_decline);
@@ -129,12 +135,13 @@ public class QuotationDetails extends AppCompatActivity {
                 //alert.setMessage("Enter Reply:");
 
                 input = new EditText(QuotationDetails.this);
+                //input.setText(Adapter_Quotation_Item.priceList.toString().replace("[", "").replace("]", ""));
                 alert.setView(input);
                 alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         QuotationApproved();
-                        QuotationApproved_ALi();
+                        //QuotationApproved_ALi();
                     }
                 });
                 alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -181,8 +188,8 @@ public class QuotationDetails extends AppCompatActivity {
             public void onClick(View view) {
 
                 finish();
-                Intent intent = new Intent(QuotationDetails.this,QuotationDashboard.class);
-                intent.putExtra("UserID",UserID);
+                Intent intent = new Intent(QuotationDetails.this, QuotationDashboard.class);
+                intent.putExtra("UserID", UserID);
                 startActivity(intent);
             }
         });
@@ -190,12 +197,12 @@ public class QuotationDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                SharedPreferences pref =  getSharedPreferences(Survey_Login.Pre, Context.MODE_PRIVATE);
+                SharedPreferences pref = getSharedPreferences(Survey_Login.Pre, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.clear();
                 editor.apply();
                 finish();
-                startActivity(new Intent(QuotationDetails.this,Survey_Login.class));
+                startActivity(new Intent(QuotationDetails.this, Survey_Login.class));
             }
         });
 
@@ -210,30 +217,29 @@ public class QuotationDetails extends AppCompatActivity {
     public void onBackPressed() {
         finish();
         //startActivity(new Intent(QuotationDetails.this,QuotationDashboard.class));
-        Intent intent = new Intent(getApplicationContext(),QuotationDashboard.class);
+        Intent intent = new Intent(getApplicationContext(), QuotationDashboard.class);
         startActivity(intent);
     }
 
-    public void getQuotationDetails()
-    {
+    public void getQuotationDetails() {
 
-        final AlertDialog progressDialog = new SpotsDialog(this,R.style.CustomProgress);
+        final AlertDialog progressDialog = new SpotsDialog(this, R.style.CustomProgress);
         progressDialog.show();
         progressDialog.setCancelable(false);
 
-        final String url = ("http://"+Survey_Login.IP+"/api/get-quotation-detail/"+QID);
+        final String url = ("http://" + Survey_Login.IP + "/api/get-quotation-detail/" + QID);
         StringRequest req = new StringRequest(url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
-                        if (response != null)
-                        {
+                        if (response != null) {
                             try {
                                 progressDialog.dismiss();
                                 JSONObject jsonObject = new JSONObject(response);
                                 JSONObject innerObject = jsonObject.getJSONObject("quotation");
                                 ID = innerObject.getString("id");
+                                Quotation_ID = innerObject.getString("quotation_id");
                                 String sender = innerObject.getString("sender");
                                 String site = innerObject.getString("site");
                                 String body = innerObject.getString("body");
@@ -245,14 +251,14 @@ public class QuotationDetails extends AppCompatActivity {
                                 String tax = innerObject.getString("tax") + "%";
                                 String amount_before_tax = "Rs. " + innerObject.getString("before_tax_amount");
                                 String total_amount = "Rs. " + innerObject.getString("total_amount");
+                                String approved_quotation_before_tax = "Rs. " + innerObject.getString("approved_quotation_before_tax");
+                                String approved_quotation_after_tax = "Rs. " + innerObject.getString("approved_quotation_after_tax");
 
-                                if (RoleName.equals("reporting manager") && status.equals("recommended"))
-                                {
+                                if (RoleName.equals("reporting manager") && status.equals("recommended")) {
                                     fabRecomm.setVisibility(View.GONE);
                                     tv_recommend.setVisibility(View.GONE);
                                 }
-                                if (RoleName.equals("manager") && status.equals("pending"))
-                                {
+                                if (RoleName.equals("manager") && status.equals("pending")) {
                                     fabRecomm.setVisibility(View.VISIBLE);
                                     tv_recommend.setVisibility(View.VISIBLE);
                                     fabApp.setVisibility(View.VISIBLE);
@@ -261,8 +267,7 @@ public class QuotationDetails extends AppCompatActivity {
                                     tv_decline.setVisibility(View.VISIBLE);
                                 }
                                 if (RoleName.equals("manager") && (status.equals("approved") || status.equals("declined") ||
-                                        status.equals("recommended")))
-                                {
+                                        status.equals("recommended"))) {
                                     fabRecomm.setVisibility(View.GONE);
                                     tv_recommend.setVisibility(View.GONE);
                                     fabApp.setVisibility(View.GONE);
@@ -270,37 +275,80 @@ public class QuotationDetails extends AppCompatActivity {
                                     fabDec.setVisibility(View.GONE);
                                     tv_decline.setVisibility(View.GONE);
                                 }
-                                txtID.setText("Quotation ID: "+ ID);
-                                txtSender.setText("Sender: "+sender);
-                                txtSite.setText("Site: "+site);
-                                txtBody.setText("Description: "+body);
-                                txtDate.setText("Quotation Date: "+Qdate);
-                                txtStatus.setText("Status: "+status);
-                                txtReply.setText("Reply: "+reply);
+                                /*if (status.equals("approved")){
+                                    layout1.setLayoutParams(new LinearLayout.LayoutParams(
+                                            LinearLayout.LayoutParams.MATCH_PARENT,
+                                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                                            5.5f));
+                                    tv_approved_qty.setText("Approved Qty");
+                                } else {
+                                    layout1.setLayoutParams(new LinearLayout.LayoutParams(
+                                            LinearLayout.LayoutParams.MATCH_PARENT,
+                                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                                            4.5f));
+                                    tv_approved_qty.setVisibility(View.GONE);
+                                }*/
+
+                                txtID.setText("Quotation ID: " + ID);
+                                txtSender.setText("Sender: " + sender);
+                                txtSite.setText("Site: " + site);
+                                txtBody.setText("Description:\n" + Html.fromHtml(body));
+                                txtDate.setText("Quotation Date: " + Qdate);
+                                txtStatus.setText("Status: " + status);
+                                txtReply.setText("Reply:\n" + Html.fromHtml(reply));
                                 txtSR.setText("SR: " + sr);
                                 txtTicketID.setText("Ticket ID: " + ticket_id);
                                 txtTax.setText("Tax: " + tax);
-                                txtAmountBeforeTax.setText("Amount Before Tax: " + amount_before_tax);
-                                txtTotalAmount.setText("Total Amount: " + total_amount);
+                                if (status.equals("pending")){
+                                    txtAmountBeforeTax.setText("Amount Before Tax: " + amount_before_tax);
+                                    txtTotalAmount.setText("Total Amount: " + total_amount);
+                                } else {
+                                    txtAmountBeforeTax.setText("Amount Before Tax: " + approved_quotation_before_tax);
+                                    txtTotalAmount.setText("Total Amount: " + approved_quotation_after_tax);
+                                }
+
 
                                 JSONArray jsonArray = innerObject.getJSONArray("has_products");
-                                for (int i = 0; i < jsonArray.length(); i++){
+                                for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject object = jsonArray.getJSONObject(i);
+                                    String id = object.getString("id");
                                     String product_name = object.getString("product_name");
                                     String quantity = object.getString("quantity");
                                     String cost = object.getString("cost");
                                     String sub_total = object.getString("sub_total");
+                                    String sr_product_id = object.getString("sr_product_id");
+                                    String approved_quantity = object.getString("approved_quantity");
+                                    if (object.isNull("approved_quantity")){
+                                        Model_Quotation_Item item = new Model_Quotation_Item(
+                                                sr_product_id,
+                                                id,
+                                                product_name,
+                                                quantity,
+                                                cost,
+                                                sub_total,
+                                                "0",
+                                                status
+                                        );
+                                        list.add(item);
+                                    } else {
+                                        Model_Quotation_Item item = new Model_Quotation_Item(
+                                                sr_product_id,
+                                                id,
+                                                product_name,
+                                                quantity,
+                                                cost,
+                                                sub_total,
+                                                approved_quantity,
+                                                status
+                                        );
+                                        list.add(item);
 
-                                    Model_Quotation_Item item = new Model_Quotation_Item(
-                                            product_name,
-                                            quantity,
-                                            cost,
-                                            sub_total
-                                    );
-                                    list.add(item);
+                                    }
+
+
                                 }
 
-                                adapter = new Adapter_Quotation_Item(list,QuotationDetails.this);
+                                adapter = new Adapter_Quotation_Item(list, QuotationDetails.this);
                                 recyclerView.setAdapter(adapter);
 
                             } catch (final JSONException e) {
@@ -317,8 +365,7 @@ public class QuotationDetails extends AppCompatActivity {
                                     }
                                 });
                             }
-                        }
-                        else {
+                        } else {
                             progressDialog.dismiss();
                             Log.e(TAG, "Couldn't get json from server.");
                             runOnUiThread(new Runnable() {
@@ -338,7 +385,7 @@ public class QuotationDetails extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressDialog.dismiss();
-                        Toast.makeText(getApplicationContext(),error.getMessage(),
+                        Toast.makeText(getApplicationContext(), error.getMessage(),
                                 Toast.LENGTH_LONG).show();
                     }
                 });
@@ -347,13 +394,12 @@ public class QuotationDetails extends AppCompatActivity {
         requestQueue.add(req);
     }
 
-    public void QuotationRecommended()
-    {
-        final AlertDialog progressDialog = new SpotsDialog(this,R.style.CustomProgress);
+    public void QuotationRecommended() {
+        final AlertDialog progressDialog = new SpotsDialog(this, R.style.CustomProgress);
         progressDialog.show();
         progressDialog.setCancelable(false);
 
-        final String url = "http://"+Survey_Login.IP+"/api/recommend-quotation/"+ID+"/"+ParentID;
+        final String url = "http://" + Survey_Login.IP + "/api/recommend-quotation/" + ID + "/" + ParentID;
 
         StringRequest req = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -386,71 +432,21 @@ public class QuotationDetails extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressDialog.dismiss();
-                        Toast.makeText(getApplicationContext(),error.getMessage(),
+                        Toast.makeText(getApplicationContext(), error.getMessage(),
                                 Toast.LENGTH_LONG).show();
                     }
                 });
-
 
 
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(req);
     }
 
-    public void QuotationApproved()
-    {
-                final String url = "http://"+Survey_Login.IP+"/api/approve-quotation";
-
-                StringRequest req = new StringRequest(Request.Method.POST, url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-
-                                try {
-                                    JSONObject jsonObject = new JSONObject(response);
-                                    String msg = jsonObject.getString("msg");
-                                    if (msg.equals("success"))
-                                    {
-                                        /*finish();
-                                        Intent intent = new Intent(QuotationDetails.this,QuotationDashboard.class);
-                                        intent.putExtra("UserID",UserID);
-                                        startActivity(intent);
-                                        Toast.makeText(getApplicationContext(),"Quotation Approved",Toast.LENGTH_LONG).show();*/
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-
-                            }
-                        }){
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> map = new HashMap<String, String>();
-                        map.put(KEY_ID, ID);
-                        map.put(KEY_REPLY, input.getText().toString());
-                        return map;
-                    }
-                };
-
-                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                requestQueue.add(req);
-
-    }
-
-    public void QuotationApproved_ALi()
-    {
-        final AlertDialog progressDialog = new SpotsDialog(this,R.style.CustomProgress);
+    public void QuotationApproved() {
+        final AlertDialog progressDialog = new SpotsDialog(this, R.style.CustomProgress);
         progressDialog.show();
         progressDialog.setCancelable(false);
-
-        final String url = "http://"+Survey_Login.IP_ALI+"/api/reply_quotation/" + Q_ID;
+        final String url = "http://" + Survey_Login.IP + "/api/approve-quotation";
 
         StringRequest req = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -460,17 +456,69 @@ public class QuotationDetails extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String msg = jsonObject.getString("msg");
-                            if (msg.equals("success"))
-                            {
+                            if (msg.equals("success")) {
                                 progressDialog.dismiss();
                                 finish();
-                                Intent intent = new Intent(QuotationDetails.this,QuotationDashboard.class);
-                                intent.putExtra("UserID",UserID);
+                                Intent intent = new Intent(QuotationDetails.this, QuotationDashboard.class);
+                                intent.putExtra("UserID", UserID);
                                 startActivity(intent);
-                                Toast.makeText(getApplicationContext(),"Quotation Approved",Toast.LENGTH_LONG).show();
-                            } else {
+                                Toast.makeText(getApplicationContext(), "Quotation Approved",
+                                        Toast.LENGTH_LONG).show();
+                            } else{
                                 progressDialog.dismiss();
-                                Toast.makeText(getApplicationContext(),msg,
+                                Toast.makeText(getApplicationContext(), msg,
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            progressDialog.dismiss();
+                            e.printStackTrace();
+                        }
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put(KEY_ID, ID);
+                map.put("quotation_id", Quotation_ID);
+                map.put(KEY_REPLY, input.getText().toString());
+                map.put("sr_product_id", Adapter_Quotation_Item.idList.toString().replace("[", "").replace("]", ""));
+                map.put("approved_quantity", Adapter_Quotation_Item.priceList.toString().replace("[", "").replace("]", ""));
+                return map;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(req);
+
+    }
+
+    public void QuotationApproved_ALi() {
+
+
+        final String url = "http://" + Survey_Login.IP_ALI + "/api/reply_quotation/" + Q_ID;
+
+        StringRequest req = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String msg = jsonObject.getString("msg");
+                            if (msg.equals("success")) {
+
+
+                            } else {
+
+                                Toast.makeText(getApplicationContext(), msg,
                                         Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
@@ -483,11 +531,11 @@ public class QuotationDetails extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        progressDialog.dismiss();
-                        Toast.makeText(getApplicationContext(),error.getMessage(),
+
+                        Toast.makeText(getApplicationContext(), error.getMessage(),
                                 Toast.LENGTH_LONG).show();
                     }
-                }){
+                }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
@@ -503,18 +551,17 @@ public class QuotationDetails extends AppCompatActivity {
 
     }
 
-    public void QuotationDecline()
-    {
-                final String url = "http://"+Survey_Login.IP+"/api/decline-quotation";
+    public void QuotationDecline() {
+        final String url = "http://" + Survey_Login.IP + "/api/decline-quotation";
 
-                StringRequest req = new StringRequest(Request.Method.POST, url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
+        StringRequest req = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
 
-                                try {
-                                    JSONObject jsonObject = new JSONObject(response);
-                                    //String msg = jsonObject.getString("msg");
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            //String msg = jsonObject.getString("msg");
                                    /* if (msg.equals("success"))
                                     {
                                         *//*finish();
@@ -523,39 +570,39 @@ public class QuotationDetails extends AppCompatActivity {
                                         startActivity(intent);
                                         Toast.makeText(getApplicationContext(),"Quotation Declined",Toast.LENGTH_LONG).show();*//*
                                     }*/
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
 
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-
-                            }
-                        }){
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> map = new HashMap<String, String>();
-                        map.put(KEY_ID, ID);
-                        map.put(KEY_REPLY, input.getText().toString());
-                        return map;
                     }
-                };
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
 
-                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                requestQueue.add(req);
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put(KEY_ID, ID);
+                map.put(KEY_REPLY, input.getText().toString());
+                return map;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(req);
 
     }
-    public void QuotationDecline_ALI()
-    {
-        final AlertDialog progressDialog = new SpotsDialog(this,R.style.CustomProgress);
+
+    public void QuotationDecline_ALI() {
+        final AlertDialog progressDialog = new SpotsDialog(this, R.style.CustomProgress);
         progressDialog.show();
         progressDialog.setCancelable(false);
 
-        final String url = "http://"+Survey_Login.IP_ALI+"/api/reply_quotation/"+Q_ID;
+        final String url = "http://" + Survey_Login.IP_ALI + "/api/reply_quotation/" + Q_ID;
 
         StringRequest req = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -565,17 +612,16 @@ public class QuotationDetails extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String msg = jsonObject.getString("msg");
-                            if (msg.equals("success"))
-                            {
+                            if (msg.equals("success")) {
                                 progressDialog.dismiss();
                                 finish();
-                                Intent intent = new Intent(QuotationDetails.this,QuotationDashboard.class);
-                                intent.putExtra("UserID",UserID);
+                                Intent intent = new Intent(QuotationDetails.this, QuotationDashboard.class);
+                                intent.putExtra("UserID", UserID);
                                 startActivity(intent);
-                                Toast.makeText(getApplicationContext(),"Quotation Declined",Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Quotation Declined", Toast.LENGTH_LONG).show();
                             } else {
                                 progressDialog.dismiss();
-                                Toast.makeText(getApplicationContext(),msg,
+                                Toast.makeText(getApplicationContext(), msg,
                                         Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
@@ -589,10 +635,10 @@ public class QuotationDetails extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progressDialog.dismiss();
-                        Toast.makeText(getApplicationContext(),error.getMessage(),
+                        Toast.makeText(getApplicationContext(), error.getMessage(),
                                 Toast.LENGTH_LONG).show();
                     }
-                }){
+                }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();

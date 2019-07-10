@@ -142,10 +142,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:background="@drawable/textlines"
-                android:drawableLeft="@drawable/ic_tickets"
                 android:drawablePadding="5dp"
-                android:hint="Description:"
-                android:padding="7dp"
+                android:paddingLeft="28dp"
+                android:text="Description:"
                 android:textColorHint="#233588"
                 android:textSize="18dp"
                 android:textStyle="bold" />
@@ -226,10 +225,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:background="@drawable/textlines"
-                android:drawableLeft="@drawable/ic_tickets"
-                android:drawablePadding="5dp"
-                android:hint="Reply:"
-                android:padding="7dp"
+                android:paddingLeft="28dp"
+                android:text="Reply:"
                 android:textColorHint="#233588"
                 android:textSize="18dp"
                 android:textStyle="bold" />
@@ -248,10 +245,22 @@
                 android:textStyle="bold" />
 
             <LinearLayout
+                android:id="@+id/layout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="4">
+                android:weightSum="5.5">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:background="#32C2CD"
+                    android:gravity="center"
+                    android:text="SNO"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -271,6 +280,18 @@
                     android:background="#32C2CD"
                     android:gravity="center"
                     android:text="Quantity"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_approved_qty"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#32C2CD"
+                    android:gravity="center"
+                    android:text="Approved Qty"
                     android:textColor="#FFFFFF"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -334,11 +355,11 @@
                     android:id="@+id/tv_recommend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="Recommend"
                     android:textColor="#233588"
                     android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -361,11 +382,11 @@
                     android:id="@+id/tv_approve"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="Approve"
                     android:textColor="#233588"
                     android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -388,11 +409,11 @@
                     android:id="@+id/tv_decline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="Decline"
                     android:textColor="#233588"
                     android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
