@@ -55,8 +55,8 @@ public class QuotationDetails extends AppCompatActivity {
     public static final String KEY_ID = "id";
     public static final String KEY_REPLY = "reply";
     public String REPLY_VALUE;
-    private String Q_ID, QID, RoleName, ParentID, ID,Quotation_ID, RoleID, UserID, Email;
-    private TextView tv_approved_qty,tv_recommend, tv_approve, tv_decline, txtSR, txtTicketID, txtTax, txtAmountBeforeTax, txtTotalAmount, txtID, txtSender, txtSite, txtBody, txtDate, txtStatus, txtReply;
+    private String Q_ID, QID, RoleName, ParentID, ID, Quotation_ID, RoleID, UserID, Email;
+    private TextView tv_approved_qty, tv_recommend, tv_approve, tv_decline, txtSR, txtTicketID, txtTax, txtAmountBeforeTax, txtTotalAmount, txtID, txtSender, txtSite, txtBody, txtDate, txtStatus, txtReply;
     private FloatingActionButton fabRecomm, fabApp, fabDec;
     private SharedPreferences sharedp;
     private EditText input;
@@ -167,7 +167,7 @@ public class QuotationDetails extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         QuotationDecline();
-                        QuotationDecline_ALI();
+                        //QuotationDecline_ALI();
                     }
                 });
                 alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -299,7 +299,7 @@ public class QuotationDetails extends AppCompatActivity {
                                 txtSR.setText("SR: " + sr);
                                 txtTicketID.setText("Ticket ID: " + ticket_id);
                                 txtTax.setText("Tax: " + tax);
-                                if (status.equals("pending")){
+                                if (status.equals("pending")) {
                                     txtAmountBeforeTax.setText("Amount Before Tax: " + amount_before_tax);
                                     txtTotalAmount.setText("Total Amount: " + total_amount);
                                 } else {
@@ -318,7 +318,7 @@ public class QuotationDetails extends AppCompatActivity {
                                     String sub_total = object.getString("sub_total");
                                     String sr_product_id = object.getString("sr_product_id");
                                     String approved_quantity = object.getString("approved_quantity");
-                                    if (object.isNull("approved_quantity")){
+                                    if (object.isNull("approved_quantity")) {
                                         Model_Quotation_Item item = new Model_Quotation_Item(
                                                 sr_product_id,
                                                 id,
@@ -464,7 +464,7 @@ public class QuotationDetails extends AppCompatActivity {
                                 startActivity(intent);
                                 Toast.makeText(getApplicationContext(), "Quotation Approved",
                                         Toast.LENGTH_LONG).show();
-                            } else{
+                            } else {
                                 progressDialog.dismiss();
                                 Toast.makeText(getApplicationContext(), msg,
                                         Toast.LENGTH_LONG).show();
@@ -552,6 +552,10 @@ public class QuotationDetails extends AppCompatActivity {
     }
 
     public void QuotationDecline() {
+        final AlertDialog progressDialog = new SpotsDialog(this, R.style.CustomProgress);
+        progressDialog.show();
+        progressDialog.setCancelable(false);
+
         final String url = "http://" + Survey_Login.IP + "/api/decline-quotation";
 
         StringRequest req = new StringRequest(Request.Method.POST, url,
@@ -561,15 +565,18 @@ public class QuotationDetails extends AppCompatActivity {
 
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            //String msg = jsonObject.getString("msg");
-                                   /* if (msg.equals("success"))
-                                    {
-                                        *//*finish();
-                                        Intent intent = new Intent(QuotationDetails.this,QuotationDashboard.class);
-                                        intent.putExtra("UserID",UserID);
-                                        startActivity(intent);
-                                        Toast.makeText(getApplicationContext(),"Quotation Declined",Toast.LENGTH_LONG).show();*//*
-                                    }*/
+                            String msg = jsonObject.getString("msg");
+                            if (msg.equals("success")) {
+                                progressDialog.dismiss();
+                                finish();
+                                Intent intent = new Intent(QuotationDetails.this, QuotationDashboard.class);
+                                intent.putExtra("UserID", UserID);
+                                startActivity(intent);
+                                Toast.makeText(getApplicationContext(), "Quotation Declined", Toast.LENGTH_LONG).show();
+                            } else {
+                                progressDialog.dismiss();
+                                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -580,7 +587,8 @@ public class QuotationDetails extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        progressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(),error.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
